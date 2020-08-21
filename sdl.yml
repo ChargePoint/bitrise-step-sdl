@@ -1,0 +1,13 @@
+--- 
+job_template: 
+  name: "Android"
+  source: "/Users/CTIPL078/go/src/github.com/ChargePoint/bitrise-step-sdl/AndroidLocalization.zip"
+  source_language: en-US
+  target_languages: 
+    - de-DE
+    # - en-GB
+    # - es-ES
+    # - fr-CA
+    # - fr-FR
+    # - it-IT
+    # - nl-NL

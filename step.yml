@@ -1,0 +1,117 @@
+#
+# A couple of useful guides & docs:
+#
+# - Main Bitrise CLI docs: https://github.com/bitrise-io/bitrise/tree/master/_docs
+# - Step Development Guideline: https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
+# - Bitrise.yml format spec: https://github.com/bitrise-io/bitrise/blob/master/_docs/bitrise-yml-format-spec.md
+# - Bitrise docs: http://devcenter.bitrise.io/
+# - Bitrise CLI guides: http://devcenter.bitrise.io/bitrise-cli/
+
+title: |-
+  SDL
+summary: |
+  For interacting with SDL API
+description: |
+  For automating your localization requests with SDL.
+website: https://github.com/ChargePoint/bitrise-step-sdl
+source_code_url: https://github.com/ChargePoint/bitrise-step-sdl
+support_url: https://github.com/ChargePoint/bitrise-step-sdl/issues
+host_os_tags:
+  - osx-10.10
+  - ubuntu-16.04
+
+# If this step should be available only for certain project types
+# just uncomment this `project_type_tags` section and include all the
+# project types supported by the step. If the step can be used for all
+# project types then you can just remove this section.
+# If no `project_type_tags` specified (or specified as an empty array)
+# that means the step can be used for any project type.
+# You can find more information about project type tags in the Step Development Guideline:
+# https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
+#
+# project_type_tags:
+#   - ios
+#   - macos
+#   - android
+#   - xamarin
+#   - react-native
+#   - cordova
+#   - ionic
+
+# Type tags are used for categorizing steps, for easier step discovery in Step Libraries.
+# You can find more information about type tags in the Step Development Guideline:
+# https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
+type_tags:
+  - utility
+
+is_requires_admin_user: true
+is_always_run: false
+is_skippable: false
+run_if: ""
+
+deps:
+  brew:
+  - name: git
+  - name: wget
+  apt_get:
+  - name: git
+  - name: wget
+
+
+toolkit:
+  go:
+    package_name: github.com/ChargePoint/bitrise-step-sdl
+
+
+inputs:
+  - sdl_config:
+    opts:
+      title: "SDL Configuration"
+      summary: YAML configuration filepath
+      description: |
+        YAML configuration filepath
+        Can be Markdown formatted text.
+      is_required: false
+      is_sensitive: false
+  - sdl_client_id:
+    opts:
+      title: "SDL Client Id"
+      summary: Client Id provided by SDL after creating an application on mantra.
+      description: |
+        Client Id provided by SDL after creating an application on mantra.
+        Can be Markdown formatted text.
+      is_required: true
+      is_sensitive: true
+  - sdl_client_secret:
+    opts:
+      title: "SDL Client Secret"
+      summary: Client secret provided by SDL after creating an application on mantra.
+      description: |
+        Client secret provided by SDL after creating an application on mantra.
+      is_required: true
+      is_sensitive: true
+  - sdl_username:
+    opts:
+      title: "SDL account username"
+      summary: SDL account username for authentication
+      description: |
+        SDL account username for authentication
+      is_required: true
+      is_sensitive: true
+  - sdl_password:
+    opts:
+      title: "SDL account password"
+      summary: SDL account password for authentication
+      description: |
+        SDL account password for authentication
+      is_required: true
+      is_sensitive: true
+
+
+outputs:
+  - SDL_PROJECT_DETAIL_URL:
+    opts:
+      title: "SDL Project Detail URL"
+      summary: URL for the job created with SDL
+      description: |
+        URL for the job created with SDL
