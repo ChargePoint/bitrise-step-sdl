@@ -42,7 +42,8 @@ func sdlCreateProjectURL() string{
 }
 
 func sdlPortalProjectDetailsURL(projectId string) string {
-	return "https://languagecloud.sdl.com/en/managed-translation/details?filter=InProgress&project="+projectId
+	//return "https://languagecloud.sdl.com/en/managed-translation/details?filter=InProgress&project="+projectId
+	return "https://languagecloud.sdl.com/en/managed-translation/detail?jobId="+projectId
 }
 
 func getenv(key, fallback string) string {
@@ -360,7 +361,6 @@ func main() {
 
 	fmt.Printf("Access_token is %s- Token_type is %s",auth.Access_token,auth.Token_type)
 
-	//projetOptions := []ProjetOption{}
 
 	var projectOptions []ProjectOption
 
@@ -370,9 +370,6 @@ func main() {
 
 	attachment := Attachment{}
 	attachment.AttachmentFilePath = configuration.Job_template.Source
-	//attachment.AttachmentFilePath = "/Users/CTIPL078/go/src/github.com/ChargePoint/bitrise-step-sdl/AndroidLocalization.zip"
-
-	//attachment.AttachmentFilePath = "/Users/CTIPL078/go/src/github.com/ChargePoint/bitrise-step-sdl/iOSLocalization.zip"
 
 	var uploadResponse []UploadResponse
 	uploadAttachment(attachment, auth,projectOptions[0].ProjectOptionsId,&uploadResponse)
@@ -389,19 +386,15 @@ func main() {
 
 	project:= Project{}
 	project.ProjectOptionsId = projectOptions[0].ProjectOptionsId
-	//project.Name = "Android-"+dateString
 	project.Name = configuration.Job_template.Name + "-" + dateString
 	project.SrcLang = configuration.Job_template.Source_language
 
 	file := File{}
 	file.FileID = uploadResponse[0].FileId
-	//file.Targets = []string{"de-DE"}
 	file.Targets = configuration.Job_template.Target_languages
 
-	//var files []File
 	files := make([]File, 0)
 	files = append(files, file)
-	//files = {file}
 
 	project.Files = files
 
