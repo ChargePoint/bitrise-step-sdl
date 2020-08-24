@@ -42,7 +42,6 @@ func sdlCreateProjectURL() string{
 }
 
 func sdlPortalProjectDetailsURL(projectId string) string {
-	//return "https://languagecloud.sdl.com/en/managed-translation/details?filter=InProgress&project="+projectId
 	return "https://languagecloud.sdl.com/en/managed-translation/detail?jobId="+projectId
 }
 
