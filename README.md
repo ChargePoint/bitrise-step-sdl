@@ -44,7 +44,7 @@ envs:
         - sdl_client_id: "$SDL_CLIENT_ID"
         - sdl_client_secret: "$SDL_CLIENT_SECRET"
         - sdl_username: "$SDL_USERNAME"
-        - sdl_password: "$SDL_PASSWORD" </addr>
+        - sdl_password: "$SDL_PASSWORD"
  ```
         
 4. Save the bitrise.yml and define all the required secrets like client id, client secret etc. and you are ready to go.
