@@ -18,6 +18,7 @@ import (
 
 var clientID string
 var clientSecret string
+var projectOptionsId string
 
 var httpClient = &http.Client{Timeout: 200 * time.Second}
 
@@ -56,6 +57,7 @@ func getenv(key, fallback string) string {
 type SDLJobTemplateConfiguration struct {
 	Name             string                               `yaml:"name"`
 	Source           string                               `yaml:"source"`
+	ProjectOption 	 string 							  `yaml:"project_option"`
 	Source_language  string                               `yaml:"source_language"`
 	Target_languages []string                             `yaml:"target_languages"`
 }
@@ -112,6 +114,7 @@ func authenticate(clientID string, clientSecret string, userName string,password
 
 type ProjectOption struct{
 	ProjectOptionsId string `json:"Id"`
+	ProjectOptionName string `json:"Name"`
 }
 
 
@@ -131,11 +134,11 @@ func getProjectOptions(auth AuthenticateResponse,target interface{})error{
 	}
 	defer resp.Body.Close()
 
-	/*responseData, sErr := ioutil.ReadAll(resp.Body)
-	if sErr != nil {
+	// responseData, sErr := ioutil.ReadAll(resp.Body)
+	// if sErr != nil {
 
-	}
-	fmt.Println(string(responseData))*/
+	// }
+	// fmt.Println(string(responseData))
 
 	return json.NewDecoder(resp.Body).Decode(target)
 }
@@ -365,26 +368,30 @@ func main() {
 
 	getProjectOptions(auth,&projectOptions)
 
-	fmt.Println(projectOptions[0].ProjectOptionsId)
+	for _, value := range projectOptions {
+
+		if strings.EqualFold(value.ProjectOptionName,configuration.Job_template.ProjectOption) {
+			projectOptionsId = value.ProjectOptionsId
+			fmt.Println(value.ProjectOptionsId)
+			break
+		}
+	}
+
+	
 
 	attachment := Attachment{}
 	attachment.AttachmentFilePath = configuration.Job_template.Source
 
 	var uploadResponse []UploadResponse
-	uploadAttachment(attachment, auth,projectOptions[0].ProjectOptionsId,&uploadResponse)
+	uploadAttachment(attachment, auth,projectOptionsId,&uploadResponse)
 
 	fmt.Println("Uploaded file id is "+uploadResponse[0].FileId)
 
-	//var languages []Language
-
-	//getAllLanguages(auth,&languages)
-
 	currentTime := time.Now()
-	// Golang wat - https://gobyexample.com/time-formatting-parsing
 	dateString := currentTime.Format("20060102")
 
 	project:= Project{}
-	project.ProjectOptionsId = projectOptions[0].ProjectOptionsId
+	project.ProjectOptionsId = projectOptionsId
 	project.Name = configuration.Job_template.Name + "-" + dateString
 	project.SrcLang = configuration.Job_template.Source_language
 
@@ -418,8 +425,8 @@ func main() {
 		fmt.Printf("Failed to expose output with envman, error: %#v | output: %s", err, cmdLog)
 		os.Exit(1)
 	}
-	// You can find more usage examples on envman's GitHub page
-	//  at: https://github.com/bitrise-io/envman
+	//You can find more usage examples on envman's GitHub page
+	//at: https://github.com/bitrise-io/envman
 
 	//
 	// --- Exit codes:
