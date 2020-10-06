@@ -31,6 +31,25 @@ envs:
 - A_SECRET_PARAM_TWO: the value for secret two
 ```
 
+## How to use this step with Bitrise workflow
+
+1. Add sdl.yml configuration file to your Android/iOS repo and update any property as per your requirement. This file contains some configurations like target languages, source folder name etc. Check sdl.yml for details.
+2. Create a new workflow “upload-sdl” under android/ios project on bitrise cloud application.
+3. Now open bitrise.yml for your android/ios project on Bitrise cloud application and add below yaml block after “Generate AndroidLocalization.zip/iosLocalization.zip” step under “upload-sdl” workflow.
+```yaml
+- git::https://github.com/ChargePoint/bitrise-step-sdl.git@master:
+        title: Upload to SDL
+        inputs:
+        - sdl_config: "./sdl.yml"
+        - sdl_client_id: "$SDL_CLIENT_ID"
+        - sdl_client_secret: "$SDL_CLIENT_SECRET"
+        - sdl_username: "$SDL_USERNAME"
+        - sdl_password: "$SDL_PASSWORD"
+ ```
+        
+4. Save the bitrise.yml and define all the required secrets like client id, client secret etc. and you are ready to go.
+5. Just run the workflow on any branch for which you want to submit localization request to SDL, and you are done.
+
 ## How to create your own step
 
 1. Create a new git repository for your step (**don't fork** the *step template*, create a *new* repository)
